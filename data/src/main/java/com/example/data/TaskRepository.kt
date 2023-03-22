@@ -7,9 +7,13 @@ import androidx.room.Room
 import com.example.data.databases.TaskDatabase
 import com.example.domain.ITaskRepository
 import com.example.domain.models.TaskDomain
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 private const val DATABASE_NAME = "task-database"
+private const val TAG = "TaskRepositoryImpl"
+
 
 class TaskRepository
     private constructor(context: Context)
@@ -55,25 +59,32 @@ class TaskRepository
         return domain
     }
 
-    override suspend fun create(task: TaskDomain) {
+    override fun create(task: TaskDomain) {
         val model = TaskConverter.toModel(task)
-        taskDao.insert(model)
+        GlobalScope.launch {
+            taskDao.insert(model)
+        }
     }
 
-    override suspend fun update(task: TaskDomain) {
+    override fun update(task: TaskDomain) {
         val model = TaskConverter.toModel(task)
-        taskDao.update(model)
+        GlobalScope.launch {
+            taskDao.update(model)
+        }
     }
 
-    override suspend fun delete(task: TaskDomain) {
+    override fun delete(task: TaskDomain) {
         val model = TaskConverter.toModel(task)
-        taskDao.delete(model)
+        GlobalScope.launch {
+            taskDao.delete(model)
+
+        }
     }
 
-    override suspend fun deleteSolved() {
-        taskDao.deleteSolved()
+    override fun deleteSolved() {
+        GlobalScope.launch {
+            taskDao.deleteSolved()
+        }
     }
-
-
 }
 

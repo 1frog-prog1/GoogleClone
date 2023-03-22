@@ -2,14 +2,10 @@ package com.example.googletask
 
 import android.content.Context
 import android.os.Bundle
-import android.telecom.Call
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -34,6 +30,11 @@ class ListFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as Callbacks?
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     private var callbacks : Callbacks? = null
@@ -79,6 +80,8 @@ class ListFragment : Fragment() {
                     completeImageButton.setBackgroundResource(R.drawable.ic_completed_task)
                 else
                     completeImageButton.setBackgroundResource(R.drawable.ic_incompleted_task)
+
+                listViewModel.saveTask(task)
             }
 
             markImageButton.setOnClickListener {
@@ -89,6 +92,9 @@ class ListFragment : Fragment() {
                     markImageButton.setBackgroundResource(R.drawable.ic_marked_task)
                 else
                     markImageButton.setBackgroundResource(R.drawable.ic_not_marked_task)
+
+                listViewModel.saveTask(task)
+
             }
 
 
@@ -150,10 +156,27 @@ class ListFragment : Fragment() {
         callbacks = null
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_task_list, menu)
+    }
+
     private fun updateUI(tasks : List<TaskDomain>) {
         adapter = TaskAdapter(tasks)
         taskRecyclerView.adapter = adapter
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.new_task -> {
+                val task = TaskDomain()
+                Log.d(TAG, "${task}")
+                listViewModel.addTask(task)
+                callbacks?.onTaskSelected(task.Id)
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     companion object {

@@ -17,7 +17,7 @@ interface TaskDao {
     fun getTask(id : UUID) : LiveData<TaskModel?>
 
     @Insert
-    fun insert(task : TaskModel)
+    suspend fun insert(task : TaskModel)
 
     @Update
     suspend fun update(task : TaskModel)

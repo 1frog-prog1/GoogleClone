@@ -1,12 +1,18 @@
 package com.example.googletask.ViewModels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.data.TaskRepository
 import com.example.domain.models.TaskDomain
+import com.google.android.material.tabs.TabLayout.TabGravity
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.UUID
+
+const private val TAG = "TaskViewModel"
 
 class TaskViewModel : ViewModel() {
 
@@ -23,9 +29,7 @@ class TaskViewModel : ViewModel() {
     }
 
     fun saveTask(task : TaskDomain) {
-        suspend {
-            taskRepository.update(task)
-        }
+        taskRepository.update(task)
     }
 
 }

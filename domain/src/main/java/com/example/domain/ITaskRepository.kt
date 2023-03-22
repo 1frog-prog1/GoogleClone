@@ -10,12 +10,12 @@ interface ITaskRepository {
 
     fun getTask(id : UUID) : LiveData<TaskDomain?>
 
-    suspend fun create(task : TaskDomain)
+    fun create(task : TaskDomain)
 
-    suspend fun update(task: TaskDomain)
+    fun update(task: TaskDomain)
 
-    suspend fun delete(task: TaskDomain)
+    fun delete(task: TaskDomain)
 
-    suspend fun deleteSolved()
+    fun deleteSolved()
 
 }
