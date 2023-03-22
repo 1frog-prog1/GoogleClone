@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,9 +24,9 @@ class ListFragment : Fragment() {
         ViewModelProviders.of(this).get(ListViewModel::class.java)
     }
 
-    private var adapter : TaskAdapter? = null
-
     private lateinit var taskRecyclerView : RecyclerView
+
+    private var adapter : TaskAdapter? = TaskAdapter(emptyList())
 
     private inner class TaskHolder(view : View) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
@@ -59,9 +59,8 @@ class ListFragment : Fragment() {
             itemView.setOnClickListener(this)
 
             completeImageButton.setOnClickListener {
-                val is_completed = !listViewModel.tasks[position].isSolved
-                listViewModel.tasks[position].isSolved = is_completed
-                task.isSolved = is_completed
+                task.isSolved  = !listViewModel.tasksLiveData.value?.get(position)!!.isSolved
+                listViewModel.tasksLiveData.value?.get(position)!!.isSolved = task.isSolved
 
                 if (task.isSolved)
                     completeImageButton.setBackgroundResource(R.drawable.ic_completed_task)
@@ -70,9 +69,8 @@ class ListFragment : Fragment() {
             }
 
             markImageButton.setOnClickListener {
-                val is_marked = !listViewModel.tasks[position].isMarked
-                listViewModel.tasks[position].isMarked = is_marked
-                task.isMarked = is_marked
+                task.isMarked = !listViewModel.tasksLiveData.value?.get(position)!!.isMarked
+                listViewModel.tasksLiveData.value?.get(position)!!.isMarked = task.isMarked
 
                 if (task.isMarked)
                     markImageButton.setBackgroundResource(R.drawable.ic_marked_task)
@@ -108,11 +106,6 @@ class ListFragment : Fragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "Total count of tasks: ${listViewModel.tasks.size}")
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -123,14 +116,25 @@ class ListFragment : Fragment() {
 
         taskRecyclerView = view.findViewById(R.id.rv_tasks)
         taskRecyclerView.layoutManager = LinearLayoutManager(context)
-
-        updateUI()
+        taskRecyclerView.adapter = adapter
 
         return view
     }
 
-    private fun updateUI() {
-        val tasks = listViewModel.tasks
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        listViewModel.tasksLiveData.observe(
+            viewLifecycleOwner,
+            Observer { tasks ->
+                tasks?.let {
+                    Log.i(TAG, "Got tasks ${tasks.size}")
+                    updateUI(tasks)
+                }
+            }
+        )
+    }
+
+    private fun updateUI(tasks : List<TaskDomain>) {
         adapter = TaskAdapter(tasks)
         taskRecyclerView.adapter = adapter
 

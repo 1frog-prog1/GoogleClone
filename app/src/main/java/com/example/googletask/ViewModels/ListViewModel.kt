@@ -1,22 +1,12 @@
 package com.example.googletask.ViewModels
 
 import androidx.lifecycle.ViewModel
-import com.example.domain.models.TaskDomain
+import com.example.data.TaskRepository
 
 class ListViewModel : ViewModel() {
-    var tasks = mutableListOf<TaskDomain>()
 
-    // todo: delete it after example
+    private val taskRepository = TaskRepository.get()
 
-    init {
-        for (i in 0 until 20) {
-            val task = TaskDomain()
-            task.title = "Task #$i"
-            task.description = "Description #$i"
-            task.isSolved = i % 4 == 0
-            task.isMarked = i % 7 == 2
-            tasks += task
-        }
-    }
+    val tasksLiveData = taskRepository.getTasks()
 
 }

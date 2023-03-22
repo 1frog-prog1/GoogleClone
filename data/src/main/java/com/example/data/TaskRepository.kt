@@ -1,6 +1,8 @@
 package com.example.data
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.room.Room
 import com.example.data.databases.TaskDatabase
 import com.example.domain.ITaskRepository
@@ -37,15 +39,19 @@ class TaskRepository
 
         }
 
-    override fun getTasks(): List<TaskDomain> {
+    override fun getTasks(): LiveData<List<TaskDomain>> {
         val modelList = taskDao.getTasks()
-        val domainList = modelList.map { TaskConverter.toDomain(it) }
+        val domainList = Transformations.map(modelList) {
+            it -> it.map { TaskConverter.toDomain(it) }
+        }
         return domainList
     }
 
-    override fun getTask(id: UUID): TaskDomain? {
+    override fun getTask(id: UUID): LiveData<TaskDomain?> {
         val model = taskDao.getTask(id)
-        val domain = TaskConverter.toNullDomain(model)
+        val domain = Transformations.map(model) {
+                TaskConverter.toNullDomain(it)
+        }
         return domain
     }
 
