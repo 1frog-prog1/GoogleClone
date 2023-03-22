@@ -55,6 +55,25 @@ class TaskRepository
         return domain
     }
 
+    override suspend fun create(task: TaskDomain) {
+        val model = TaskConverter.toModel(task)
+        taskDao.insert(model)
+    }
+
+    override suspend fun update(task: TaskDomain) {
+        val model = TaskConverter.toModel(task)
+        taskDao.update(model)
+    }
+
+    override suspend fun delete(task: TaskDomain) {
+        val model = TaskConverter.toModel(task)
+        taskDao.delete(model)
+    }
+
+    override suspend fun deleteSolved() {
+        taskDao.deleteSolved()
+    }
+
 
 }
 

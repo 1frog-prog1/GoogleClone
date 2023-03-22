@@ -1,6 +1,8 @@
 package com.example.googletask
 
+import android.content.Context
 import android.os.Bundle
+import android.telecom.Call
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,15 +17,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.googletask.ViewModels.ListViewModel
 import com.example.domain.models.TaskDomain
+import java.util.UUID
 
 private const val TAG = "ListFragment"
 
 class ListFragment : Fragment() {
 
+    interface Callbacks {
+        fun onTaskSelected(taskId : UUID)
+    }
+
     private val listViewModel : ListViewModel by lazy {
         ViewModelProviders.of(this).get(ListViewModel::class.java)
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks?
+    }
+
+    private var callbacks : Callbacks? = null
     private lateinit var taskRecyclerView : RecyclerView
 
     private var adapter : TaskAdapter? = TaskAdapter(emptyList())
@@ -82,9 +95,7 @@ class ListFragment : Fragment() {
         }
 
         override fun onClick(v: View?) {
-            Toast.makeText(context, "${task.title} pressed!"
-                , Toast.LENGTH_SHORT)
-                .show()
+            callbacks?.onTaskSelected(task.Id)
         }
 
     }
@@ -132,6 +143,11 @@ class ListFragment : Fragment() {
                 }
             }
         )
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
     }
 
     private fun updateUI(tasks : List<TaskDomain>) {

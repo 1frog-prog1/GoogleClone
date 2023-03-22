@@ -20,12 +20,12 @@ interface TaskDao {
     fun insert(task : TaskModel)
 
     @Update
-    fun update(task : TaskModel)
+    suspend fun update(task : TaskModel)
 
     @Delete
-    fun delete(task: TaskModel)
+    suspend fun delete(task: TaskModel)
 
-    @Delete
-    fun deleteMarked(vararg task: TaskModel)
+    @Query("DELETE FROM Tasks WHERE is_solved = 1")
+    suspend fun deleteSolved()
 
 }

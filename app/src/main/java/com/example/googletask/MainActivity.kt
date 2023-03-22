@@ -3,10 +3,12 @@ package com.example.googletask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import java.util.*
 
 private const val TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),
+    ListFragment.Callbacks {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,5 +29,13 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "supportFragmentManager")
         }
 
+    }
+
+    override fun onTaskSelected(taskId: UUID) {
+        val fragment = TaskFragment.newInstance(taskId)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

@@ -31,17 +31,19 @@ class TaskConverter private constructor() {
                 taskModel.isMarked
             )
         }
-    }
 
-    fun toModel(taskDomain: TaskDomain): TaskModel {
-        return TaskModel(
-            taskDomain.Id,
-            taskDomain.title,
-            taskDomain.description,
-            taskDomain.date,
-            taskDomain.isSolved,
-            taskDomain.isMarked
-        )
-    }
 
+        fun toModel(taskDomain: TaskDomain): TaskModel {
+            return TaskModel(
+                taskDomain.Id,
+                taskDomain.title,
+                taskDomain.description,
+                taskDomain.date,
+                taskDomain.isSolved,
+                taskDomain.isMarked
+            )
+        }
+
+
+    }
 }
