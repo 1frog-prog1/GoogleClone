@@ -7,7 +7,7 @@ data class TaskDomain (
     val Id : UUID = UUID.randomUUID(),
     var title : String = "",
     var description : String = "",
-    var Date : Date? = null,
+    var date : Date? = null,
     var isSolved : Boolean = false,
     var isMarked : Boolean = false
         )

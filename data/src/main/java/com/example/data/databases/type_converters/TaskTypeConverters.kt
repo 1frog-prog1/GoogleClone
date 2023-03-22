@@ -1,4 +1,4 @@
-package com.example.data.databases.converters
+package com.example.data.databases.type_converters
 
 import androidx.room.TypeConverter
 import java.util.Date

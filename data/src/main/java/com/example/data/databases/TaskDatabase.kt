@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.data.entities.TaskModel
-import com.example.data.databases.converters.TaskTypeConverters
+import com.example.data.databases.type_converters.TaskTypeConverters
 
 @Database(
     entities = [ TaskModel::class ],
