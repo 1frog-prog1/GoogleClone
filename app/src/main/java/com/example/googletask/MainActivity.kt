@@ -15,9 +15,9 @@ class MainActivity : AppCompatActivity() {
         val curFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
         if (curFragment == null) {
-            val fragment = TaskFragment()
+            val fragment = ListFragment.newInstance()
 
-            Log.d(TAG, "TaskFragment there")
+            Log.d(TAG, "ListFragment there")
 
             supportFragmentManager
                 .beginTransaction()

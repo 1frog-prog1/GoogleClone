@@ -54,7 +54,6 @@
             android:id="@+id/button_mark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_task_mark"
             />
 
         <Space
@@ -66,7 +65,7 @@
             android:id="@+id/button_solve"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_complete"
+            android:background="@drawable/ic_incompleted_task"
             />
 
 
