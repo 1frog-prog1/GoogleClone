@@ -1,4 +1,4 @@
-package com.example.googletask.models
+package com.example.domain.models
 
 import java.util.Date
 import java.util.UUID

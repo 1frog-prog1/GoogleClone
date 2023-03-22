@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
-import com.example.googletask.models.TaskDomain
+import com.example.domain.models.TaskDomain
 
 private const val TAG = "TaskFragment"
 

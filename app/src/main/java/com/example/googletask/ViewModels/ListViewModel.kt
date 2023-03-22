@@ -1,7 +1,7 @@
 package com.example.googletask.ViewModels
 
 import androidx.lifecycle.ViewModel
-import com.example.googletask.models.TaskDomain
+import com.example.domain.models.TaskDomain
 
 class ListViewModel : ViewModel() {
     var tasks = mutableListOf<TaskDomain>()

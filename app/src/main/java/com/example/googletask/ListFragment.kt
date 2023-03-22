@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.googletask.ViewModels.ListViewModel
-import com.example.googletask.models.TaskDomain
+import com.example.domain.models.TaskDomain
 
 private const val TAG = "ListFragment"
 
